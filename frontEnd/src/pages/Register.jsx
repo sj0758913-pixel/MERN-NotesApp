@@ -1,0 +1,77 @@
+import React, { useState } from 'react'
+import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
+
+const Register = () => {
+  const API = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
+
+     const [email , setEmail] = useState('')
+     const [username , setUser] = useState('')
+      const [password , setPassword] = useState('')
+    
+      const handleEmail = (e)=>{
+        setEmail(e.target.value)
+      }
+
+      const handleUser = (e)=>{
+        setUser(e.target.value)
+      }
+    
+        const handlePassword = (e)=>{
+        setPassword(e.target.value)
+      }
+    
+      const handleAdd =  ()=>{
+        axios.post(API+"/register" , {email : email ,username : username , password : password}, {
+        withCredentials: true
+    })
+        .then(result =>{
+             navigate("/notes");
+             
+        })
+        .catch(err =>{
+           console.log(err)
+        })
+        setEmail('')
+        setPassword('')
+        setUser('')
+      }
+  return (
+     <>
+
+  <div className="Register-page">
+          <div className='Sign-Up'>
+          <h2>Create Account</h2>
+          <hr />
+      
+      <label>Enter Email :</label>
+        <input
+        value={email} 
+        type="email" onChange={handleEmail} placeholder='Enter email' />
+        <br />
+        <label>Create Username :</label>
+        <input
+        value={username} 
+        type="text" onChange={handleUser} placeholder='Create username' />
+        <br />
+        <label>Enter Password :</label>
+        <input 
+        value={password} 
+        type="password" onChange={handlePassword} placeholder='Enter Password' />
+        <br />
+        <button onClick={handleAdd}>Create Account</button>
+   <div className='signup'>
+       <p>Already have an account ?</p>
+      <Link to="/Home">Login</Link>
+   </div>
+    </div>
+  </div>
+
+    
+   </>
+  )
+}
+
+export default Register

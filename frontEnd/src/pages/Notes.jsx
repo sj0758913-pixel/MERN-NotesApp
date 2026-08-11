@@ -108,13 +108,13 @@ const Notes = () => {
                             Notes.slice().reverse().map(Note => {
                                 return (
 
-                                    <div className='Note' key={Note._id}>
+                                    <div className='Note' onClick={()=> editNote(Note._id , Note)} key={Note._id}>
                                         
                                         <p>{Note.content}
 
                                         </p>
                                         <div className="edit-del">
-                                            <button onClick={() => editNote(Note._id , Note)} className='edit'>Edit</button>
+                                            {/* <button onClick={() => editNote(Note._id , Note)} className='edit'>Edit</button> */}
                                             <button onClick={() => delNote(Note._id)} className='delete'>Delete</button>
                                             <p> {new Date(Note.date).toLocaleDateString("en-GB")}</p>
                                         </div>

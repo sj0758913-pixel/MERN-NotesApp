@@ -150,7 +150,11 @@ app.post("/delete/:id", isLoggedIn, async (req, res) => {
 })
 
 app.post("/Logout", (req, res) => {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none"
+});
     res.json("success logout");
 })
 

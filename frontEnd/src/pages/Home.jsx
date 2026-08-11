@@ -25,7 +25,7 @@ const Home = () => {
         .then(result =>{
            navigate("/notes")})
         .catch(err =>{
-           navigate("/Home")
+           console.log("something went wrong",err);
         })
         setEmail('')
         setPassword('')

@@ -67,7 +67,11 @@ app.post("/register", (req, res) => {
                 })
 
                 const token = jwt.sign({ id: createUser._id, email: email }, process.env.JWT_SECRET);
-                res.cookie("token", token);
+                res.cookie("token", token, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "none"
+                });
                 res.json(token);
             });
         })
@@ -90,7 +94,11 @@ app.post("/Login", async (req, res) => {
             return res.json("incorrect password")
         }
         const token = jwt.sign({ id: user._id, email: email }, process.env.JWT_SECRET);
-        res.cookie("token", token);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
+        });
         res.json({
             token,
             userid: user._id
@@ -114,15 +122,15 @@ app.post("/addNote", isLoggedIn, async (req, res) => {
 app.post("/update/:id", isLoggedIn, async (req, res) => {
     const noteId = req.params.id;
     const { text } = req.body;
-    
-        const note = await noteModel.findOneAndUpdate(
-            { _id: noteId },          // Filter
-            { content: text },        // Update
-            { new: true }             // Updated document return karega
-        )
-         .then(result => res.json(result))
+
+    const note = await noteModel.findOneAndUpdate(
+        { _id: noteId },          // Filter
+        { content: text },        // Update
+        { new: true }             // Updated document return karega
+    )
+        .then(result => res.json(result))
         .catch(err => res.json(err))
-       
+
 })
 
 app.post("/delete/:id", isLoggedIn, async (req, res) => {

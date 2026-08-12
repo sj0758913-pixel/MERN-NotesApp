@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 
 const EditNote = () => {
     const API = import.meta.env.VITE_API_URL;
+
+    const [updateNotebtn, setUpdateNotebtn] = useState('Update Note')
 const { id } = useParams();
  const navigate = useNavigate();
 const [note , setNote] = useState('');
@@ -23,12 +25,16 @@ useEffect(() => {
 }, []);
 
 const handleupdate = ()=>{
+    setUpdateNotebtn('Updating...')
     axios.post(API+"/update/"+id ,{"text":note},{
         withCredentials: true
 
     })
     .then(res=>{
+       setUpdateNotebtn('Update Note');
         navigate("/notes")
+         
+
     })
     .catch(err=>{
         navigate("/Home");
@@ -49,7 +55,7 @@ const handleupdate = ()=>{
                     onChange={(e)=>{setNote(e.target.value)}}></textarea>
                     <button
                     onClick={handleupdate}
-                        className='updt-btn'>Update Note</button>
+                        className='updt-btn'>{updateNotebtn}</button>
                 </div>
             </div>
 

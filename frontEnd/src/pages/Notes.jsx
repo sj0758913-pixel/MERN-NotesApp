@@ -5,6 +5,11 @@ import { useNavigate } from 'react-router-dom'
 
 const Notes = () => {
     const API = import.meta.env.VITE_API_URL;
+
+    const [Addnotebtn, setAddnotebtn] = useState('Add Note');
+    const [logOutbtn, setlogOutbtn] = useState('Log out')
+    const [deletebtn, setdeletebtn] = useState('Delete')
+
     const navigate = useNavigate();
     const [note, setNote] = useState('');
     const [username, setusername] = useState('');
@@ -34,11 +39,14 @@ const Notes = () => {
     }
 
     const handleSubmit = () => {
+
+        setAddnotebtn('Adding...')
         axios.post(API+"/addNote", { note: note }, {
             withCredentials: true
         })
             .then(res => {
                 fetchNotes();
+                setAddnotebtn('Add note');
             })
             .catch(err => console.log(err));
 
@@ -53,23 +61,29 @@ const Notes = () => {
         });
     }
 
-    const delNote = (id) => {
+    const delNote = (id,Note) => {
+        // if(Note){
+        //     return setdeletebtn('delete..')
+        // }
         axios.post(API+"/delete/" + id, {}, {
             withCredentials: true
         })
             .then(res => {
+                
                 fetchNotes()
+                setdeletebtn('Delete');
             })
             .catch(err => console.log(err))
 
     }
 
     const Logout = () => {
+        setlogOutbtn('LogOt..')
         axios.post(API+"/Logout", {}, {
             withCredentials: true
         })
             .then(res => {
-                console.log(res.data)
+                setlogOutbtn('Log out');
                 navigate("/Home")
             })
             .catch(err => console.log(err));
@@ -82,7 +96,7 @@ const Notes = () => {
             
                 <div className="head">
                     <h2><i>Welcome</i>, {username}👋</h2>
-                    <button onClick={Logout}>Log out</button>
+                    <button onClick={Logout}>{logOutbtn}</button>
                 </div>
                 <div>
                     <textarea
@@ -92,7 +106,7 @@ const Notes = () => {
                         placeholder="Create your Note here...(max - 50 character)"></textarea>
                     <button
                         className='Add-btn'
-                        onClick={handleSubmit}>Add Note</button>
+                        onClick={handleSubmit}>{Addnotebtn}</button>
                 </div>
 
                 <h3>All Notes :</h3>
@@ -108,14 +122,14 @@ const Notes = () => {
                             Notes.slice().reverse().map(Note => {
                                 return (
 
-                                    <div className='Note' onClick={()=> editNote(Note._id , Note)} key={Note._id}>
+                                    <div className='Note'  key={Note._id}>
                                         
                                         <p>{Note.content}
 
                                         </p>
                                         <div className="edit-del">
-                                            {/* <button onClick={() => editNote(Note._id , Note)} className='edit'>Edit</button> */}
-                                            <button onClick={() => delNote(Note._id)} className='delete'>Delete</button>
+                                            <button onClick={() => editNote(Note._id , Note)} className='edit'>Edit</button>
+                                            <button onClick={() => delNote(Note._id,Note)} className='delete'>{deletebtn}</button>
                                             <p> {new Date(Note.date).toLocaleDateString("en-GB")}</p>
                                         </div>
                                     </div>

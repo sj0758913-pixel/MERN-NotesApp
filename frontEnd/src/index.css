@@ -5,43 +5,44 @@
 }
 
 body {
-    background-color: rgb(16, 16, 16);
-
+    background-color: rgb(241, 238, 234);
 
 }
 
 .Login-page {
-    padding: 150px 15px 0 15px;
+    height: 100vh;
+    /* padding: 150px 15px 0 15px; */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .Login {
-    background-color: rgb(39, 39, 49);
-    border: 1px rgb(150, 148, 148) solid;
-    border-radius: 10px;
+     background-color: rgb(229, 233, 227);
+    border: 5px burlywood solid;
+    /* border-radius: 10px; */
     padding: 20px;
-    width: 400px;
+    width: 350px;
 }
 
 .Login h2 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
-    color: white;
+    color: black;
     margin-bottom: 10px;
 
 }
 
 .Login hr {
     margin-bottom: 20px;
-    opacity: 0.5;
+     border: 1px burlywood solid;
+    
 }
 
 .Login label {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
+    color: black
 }
 
 .Login input {
@@ -50,7 +51,7 @@ body {
     border-radius: 5px;
     margin-top: 5px;
     margin-bottom: 20px;
-    border: none;
+    border: 2px solid burlywood;
     outline: none;
 }
 
@@ -58,7 +59,8 @@ body {
     width: 100%;
     padding: 8px 10px;
     border-radius: 8px;
-    background-color: green;
+    
+    background-color: rgb(209, 146, 52);
     border: none;
     outline: none;
     margin-bottom: 5px;
@@ -66,7 +68,7 @@ body {
 }
 
 .Login button:hover {
-    background-color: rgb(15, 149, 15);
+    background-color: rgb(188, 140, 68);
 
 }
 
@@ -74,11 +76,12 @@ body {
     display: flex;
     justify-content: start;
     align-items: center;
-    color: white;
+    color: black
 }
 
 .not-login p {
     margin-right: 8px;
+    font-size: 15px;
 }
 
 .not-login a {
@@ -91,37 +94,39 @@ body {
 /* register page  */
 
 .Register-page {
-    padding: 150px 15px 0 15px;
+    height: 100vh;
+    /* padding: 150px 15px 0 15px; */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .Sign-Up {
-    background-color: rgb(39, 39, 49);
-    border: 1px rgb(150, 148, 148) solid;
-    border-radius: 10px;
+         background-color: rgb(229, 233, 227);
+    border: 5px burlywood solid;
+    /* border-radius: 10px; */
     padding: 20px;
-    width: 400px;
+    width: 350px;
 }
 
 .Sign-Up h2 {
     display: flex;
     justify-content: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
+    color: black;
     margin-bottom: 10px;
 
 }
 
 .Sign-Up hr {
     margin-bottom: 20px;
-    opacity: 0.5;
+    /* opacity: 1; */
+    border: 1px burlywood solid;
 }
 
 .Sign-Up label {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
+    color: black
 }
 
 .Sign-Up input {
@@ -130,7 +135,7 @@ body {
     border-radius: 5px;
     margin-top: 5px;
     margin-bottom: 20px;
-    border: none;
+     border: 2px solid burlywood;
     outline: none;
 }
 
@@ -138,7 +143,7 @@ body {
     width: 100%;
     padding: 8px 10px;
     border-radius: 8px;
-    background-color: green;
+      background-color: rgb(209, 146, 52);
     border: none;
     outline: none;
     margin-bottom: 5px;
@@ -146,7 +151,8 @@ body {
 }
 
 .Sign-Up button:hover {
-    background-color: rgb(15, 149, 15);
+   
+      background-color: rgb(188, 140, 68);
 
 }
 
@@ -154,11 +160,12 @@ body {
     display: flex;
     justify-content: start;
     align-items: center;
-    color: white;
+    color: black
 }
 
 .signup p {
     margin-right: 8px;
+    font-size: 15px;
 }
 
 .signup a {
@@ -236,7 +243,7 @@ body {
 }
 
 .Note-page h3 {
-    color: rgb(249, 246, 246);
+    color: black;
     margin-top: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 30px;

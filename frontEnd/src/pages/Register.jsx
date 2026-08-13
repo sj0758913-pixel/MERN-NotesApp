@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 
 const Register = () => {
   const API = import.meta.env.VITE_API_URL;
+
+  const [registerbtn, setRegisterbtn] = useState('Create Account')
   const navigate = useNavigate();
 
      const [email , setEmail] = useState('')
@@ -24,15 +26,17 @@ const Register = () => {
       }
     
       const handleAdd =  ()=>{
+        setRegisterbtn('Creating...')
         axios.post(API+"/register" , {email : email ,username : username , password : password}, {
         withCredentials: true
     })
         .then(result =>{
              navigate("/notes");
+             setRegisterbtn('Create Account');
              
         })
         .catch(err =>{
-           console.log(err)
+            setRegisterbtn('Create Account');
         })
         setEmail('')
         setPassword('')
@@ -61,7 +65,7 @@ const Register = () => {
         value={password} 
         type="password" onChange={handlePassword} placeholder='Enter Password' />
         <br />
-        <button onClick={handleAdd}>Create Account</button>
+        <button onClick={handleAdd}>{registerbtn}</button>
    <div className='signup'>
        <p>Already have an account ?</p>
       <Link to="/Home">Login</Link>

@@ -95,15 +95,14 @@ const Notes = () => {
             <div className='Note-page'>
             
                 <div className="head">
-                    <h2><i>Welcome</i>, {username}👋</h2>
+                    <h2>{username}</h2>
                     <button onClick={Logout}>{logOutbtn}</button>
                 </div>
                 <div>
                     <textarea
                         value={note}
                         onChange={handleNote}
-                        maxLength={50}
-                        placeholder="Create your Note here...(max - 50 character)"></textarea>
+                        placeholder="Create your Note here..."></textarea>
                     <button
                         className='Add-btn'
                         onClick={handleSubmit}>{Addnotebtn}</button>

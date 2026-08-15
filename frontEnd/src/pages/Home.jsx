@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   const API = import.meta.env.VITE_API_URL;
 
-  const [Signinbtn,setSigninbtn] = useState('Sign in');
+  const [signInbtn, setsignInbtn] = useState('Sign in')
   const navigate = useNavigate();
   
   const [email , setEmail] = useState('')
@@ -21,16 +21,17 @@ const Home = () => {
   }
 
       const handleLog =  ()=>{
-        setSigninbtn('Signing in...');
+        setsignInbtn('Signing in...')
         axios.post(API+"/Login" , {email : email , password : password}, {
         withCredentials: true
     })
         .then(result =>{
+          setsignInbtn('Sign in')
            navigate("/notes")})
-           setSigninbtn('Sign in')
+           
         .catch(err =>{
            console.log("something went wrong",err);
-            setSigninbtn('Sign in')
+            setsignInbtn('Sign in')
         })
         setEmail('')
         setPassword('')
@@ -54,7 +55,7 @@ const Home = () => {
         value={password} 
         type="password" onChange={handlePassword} placeholder='Enter Password' />
         <br />
-        <button onClick={handleLog}>{Signinbtn}</button>
+        <button onClick={handleLog}>{signInbtn}</button>
    <div className='not-login'>
        <p>Don't have an account ?</p>
       <Link to="/" >Create Account</Link>

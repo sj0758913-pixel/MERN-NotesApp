@@ -36,10 +36,10 @@ const isLoggedIn = (req, res, next) => {
         next();
 
     } catch (err) {
-    return res.status(401).json({
-        message: "Invalid Token"
-    });
-}
+        return res.status(401).json({
+            message: "Invalid Token"
+        });
+    }
 };
 
 
@@ -110,10 +110,11 @@ app.post("/Login", async (req, res) => {
 })
 
 app.post("/addNote", isLoggedIn, async (req, res) => {
-    const { note } = req.body;
+    const { note, Title } = req.body;
     const user = await userModel.findById({ "_id": req.user.id });
     const createNote = await noteModel.create({
         user: user._id,
+        Title: Title,
         content: note
     })
     user.Notes.push(createNote._id);
@@ -123,11 +124,14 @@ app.post("/addNote", isLoggedIn, async (req, res) => {
 
 app.post("/update/:id", isLoggedIn, async (req, res) => {
     const noteId = req.params.id;
-    const { text } = req.body;
+    const { text, Title } = req.body;
 
     const note = await noteModel.findOneAndUpdate(
         { _id: noteId },          // Filter
-        { content: text },        // Update
+        {
+            content: text,
+            Title: Title
+        },        // Update
         { new: true }             // Updated document return karega
     )
         .then(result => res.json(result))
@@ -151,10 +155,10 @@ app.post("/delete/:id", isLoggedIn, async (req, res) => {
 
 app.post("/Logout", (req, res) => {
     res.clearCookie("token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none"
-});
+        httpOnly: true,
+        secure: true,
+        sameSite: "none"
+    });
     res.json("success logout");
 })
 

@@ -5,6 +5,7 @@ const NoteSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
     },
+    Title: String,
     content: String,
     date: {
         type: Date,

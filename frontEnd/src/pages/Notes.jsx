@@ -12,6 +12,7 @@ const Notes = () => {
 
     const navigate = useNavigate();
     const [note, setNote] = useState('');
+    const [Title, setTitle] = useState('');
     const [username, setusername] = useState('');
     const [Notes, setNotes] = useState([])
 
@@ -38,10 +39,14 @@ const Notes = () => {
         setNote(e.target.value);
     }
 
+    const handleTitle = (e)=>{
+        setTitle(e.target.value);
+    }
+
     const handleSubmit = () => {
 
         setAddnotebtn('Adding...')
-        axios.post(API+"/addNote", { note: note }, {
+        axios.post(API+"/addNote", { note: note , Title : Title}, {
             withCredentials: true
         })
             .then(res => {
@@ -51,20 +56,19 @@ const Notes = () => {
             .catch(err => console.log(err));
 
         setNote('');
+        setTitle('');
     }
 
-    const editNote = (id,Note) => {
+    const editNote = (id,Note,Title) => {
         navigate("/EditNote/" +id, {
             state: {
-                note: Note
+                note: Note,
+                Title: Title
             }
         });
     }
 
     const delNote = (id,Note) => {
-        // if(Note){
-        //     return setdeletebtn('delete..')
-        // }
         axios.post(API+"/delete/" + id, {}, {
             withCredentials: true
         })
@@ -95,10 +99,15 @@ const Notes = () => {
             <div className='Note-page'>
             
                 <div className="head">
-                    <h2>{username}</h2>
+                    <h2>👋 {username}</h2>
                     <button onClick={Logout}>{logOutbtn}</button>
                 </div>
                 <div>
+                    <input className="Title" 
+                    value={Title}
+                    onChange={handleTitle}
+                    type="text" placeholder='Set Title' />
+
                     <textarea
                         value={note}
                         onChange={handleNote}
@@ -123,11 +132,10 @@ const Notes = () => {
 
                                     <div className='Note'  key={Note._id}>
                                         
-                                        <p>{Note.content}
-
-                                        </p>
+                                        <p>{Note.Title}</p>
+                                        <h4>{Note.content.split(" ").slice(0,10).join(" ")}.....</h4>
                                         <div className="edit-del">
-                                            <button onClick={() => editNote(Note._id , Note)} className='edit'>Edit</button>
+                                            <button onClick={() => editNote(Note._id , Note)} className='edit'>view</button>
                                             <button onClick={() => delNote(Note._id,Note)} className='delete'>{deletebtn}</button>
                                             <p> {new Date(Note.date).toLocaleDateString("en-GB")}</p>
                                         </div>

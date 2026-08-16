@@ -11,6 +11,7 @@ const EditNote = () => {
 const { id } = useParams();
  const navigate = useNavigate();
 const [note , setNote] = useState('');
+const [Title, setTitle] = useState('')
 
 useEffect(() => {
     axios.get(`${API}/editNote/${id}`, {
@@ -18,15 +19,22 @@ useEffect(() => {
     })
     .then(res => {
         setNote(res.data.content);
+        setTitle(res.data.Title);
     })
     .catch(err => {
         navigate("/Home");
     });
 }, []);
 
+
+const handleTitle = (e)=>{
+        setTitle(e.target.value);
+    }
+
+
 const handleupdate = ()=>{
     setUpdateNotebtn('Updating...')
-    axios.post(API+"/update/"+id ,{"text":note},{
+    axios.post(API+"/update/"+id ,{"text":note , "Title":Title},{
         withCredentials: true
 
     })
@@ -46,12 +54,16 @@ const handleupdate = ()=>{
         <>
             <div className="Edit-page">
                 <div className="bck-to-Note">
-                    <Link to="/notes"><a >⬅ back</a></Link>
+                    <Link to="/notes">↩ back</Link>
                 </div>
                 <div>
+                     <input className="Title" 
+                    value={Title}
+                    onChange={handleTitle}
+                    type="text" placeholder='Set Title' />
+
                     <textarea 
                     value={note}
-                     maxLength={50}
                     onChange={(e)=>{setNote(e.target.value)}}></textarea>
                     <button
                     onClick={handleupdate}

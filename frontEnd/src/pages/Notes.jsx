@@ -16,17 +16,22 @@ const Notes = () => {
     const [username, setusername] = useState('');
     const [Notes, setNotes] = useState([])
 
+    // for loading page
+    const [loading, setLoading] = useState(true);
+
 
     const fetchNotes = () => {
-        axios.get(API+"/notes", {
+        axios.get(API + "/notes", {
             withCredentials: true
         })
             .then(res => {
                 setNotes(res.data[0].Notes);
                 setusername(res.data[0].username);
+                setLoading(false);
             })
             .catch(err => {
                 navigate("/Home");
+                setLoading(false);
             });
     }
 
@@ -39,14 +44,14 @@ const Notes = () => {
         setNote(e.target.value);
     }
 
-    const handleTitle = (e)=>{
+    const handleTitle = (e) => {
         setTitle(e.target.value);
     }
 
     const handleSubmit = () => {
 
         setAddnotebtn('Adding...')
-        axios.post(API+"/addNote", { note: note , Title : Title}, {
+        axios.post(API + "/addNote", { note: note, Title: Title }, {
             withCredentials: true
         })
             .then(res => {
@@ -59,8 +64,8 @@ const Notes = () => {
         setTitle('');
     }
 
-    const editNote = (id,Note,Title) => {
-        navigate("/EditNote/" +id, {
+    const editNote = (id, Note, Title) => {
+        navigate("/EditNote/" + id, {
             state: {
                 note: Note,
                 Title: Title
@@ -68,12 +73,12 @@ const Notes = () => {
         });
     }
 
-    const delNote = (id,Note) => {
-        axios.post(API+"/delete/" + id, {}, {
+    const delNote = (id, Note) => {
+        axios.post(API + "/delete/" + id, {}, {
             withCredentials: true
         })
             .then(res => {
-                
+
                 fetchNotes()
                 setdeletebtn('Delete');
             })
@@ -83,7 +88,7 @@ const Notes = () => {
 
     const Logout = () => {
         setlogOutbtn('LogOt..')
-        axios.post(API+"/Logout", {}, {
+        axios.post(API + "/Logout", {}, {
             withCredentials: true
         })
             .then(res => {
@@ -92,21 +97,27 @@ const Notes = () => {
             })
             .catch(err => console.log(err));
     }
-
+    if (loading) {
+        return (
+            <div className="loading">
+                <h1>Loading your page...</h1>
+            </div>
+        );
+    }
     return (
         <>
 
             <div className='Note-page'>
-            
+
                 <div className="head">
                     <h2>👋 {username}</h2>
                     <button onClick={Logout}>{logOutbtn}</button>
                 </div>
                 <div>
-                    <input className="Title" 
-                    value={Title}
-                    onChange={handleTitle}
-                    type="text" placeholder='Set Title' />
+                    <input className="Title"
+                        value={Title}
+                        onChange={handleTitle}
+                        type="text" placeholder='Set Title' />
 
                     <textarea
                         value={note}
@@ -130,13 +141,13 @@ const Notes = () => {
                             Notes.slice().reverse().map(Note => {
                                 return (
 
-                                    <div className='Note'  key={Note._id}>
-                                        
+                                    <div className='Note' key={Note._id}>
+
                                         <p>{Note.Title}</p>
-                                        <h4>{Note.content.split(" ").slice(0,10).join(" ")}.....</h4>
+                                        <h4>{Note.content.split(" ").slice(0, 10).join(" ")}.....</h4>
                                         <div className="edit-del">
-                                            <button onClick={() => editNote(Note._id , Note)} className='edit'>view</button>
-                                            <button onClick={() => delNote(Note._id,Note)} className='delete'>{deletebtn}</button>
+                                            <button onClick={() => editNote(Note._id, Note)} className='edit'>view</button>
+                                            <button onClick={() => delNote(Note._id, Note)} className='delete'>{deletebtn}</button>
                                             <p> {new Date(Note.date).toLocaleDateString("en-GB")}</p>
                                         </div>
                                     </div>
@@ -152,5 +163,7 @@ const Notes = () => {
         </>
     )
 }
+
+
 
 export default Notes

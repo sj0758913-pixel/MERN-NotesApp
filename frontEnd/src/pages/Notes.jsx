@@ -18,6 +18,7 @@ const Notes = () => {
 
     // for loading page
     const [loading, setLoading] = useState(true);
+    const [Clicked, setClicked] = useState(false);
 
 
     const fetchNotes = () => {
@@ -49,8 +50,8 @@ const Notes = () => {
     }
 
     const handleSubmit = () => {
-
         setAddnotebtn('Adding...')
+        
         axios.post(API + "/addNote", { note: note, Title: Title }, {
             withCredentials: true
         })
@@ -62,6 +63,7 @@ const Notes = () => {
 
         setNote('');
         setTitle('');
+        setClicked(false);
     }
 
     const editNote = (id, Note, Title) => {
@@ -100,7 +102,9 @@ const Notes = () => {
     if (loading) {
         return (
             <div className="loading">
-                <h1>Loading your page...</h1>
+                <div className='load'>
+                    <h1>Loading...</h1>
+                </div>
             </div>
         );
     }
@@ -124,8 +128,11 @@ const Notes = () => {
                         onChange={handleNote}
                         placeholder="Create your Note here..."></textarea>
                     <button
-                        className='Add-btn'
-                        onClick={handleSubmit}>{Addnotebtn}</button>
+                        className={Clicked ?'clickedAddbtn':'Add-btn'}
+                        onClick={()=>{
+                            handleSubmit()
+                            setClicked(true)
+                        }}>{Addnotebtn}</button>
                 </div>
 
                 <h3>All Notes :</h3>

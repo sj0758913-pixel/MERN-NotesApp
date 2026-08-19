@@ -13,6 +13,9 @@ const Register = () => {
   const [username, setUser] = useState('')
   const [password, setPassword] = useState('')
 
+  // for clickecbtn
+  const [Clicked, setClicked] = useState(false)
+
   const handleEmail = (e) => {
     setEmail(e.target.value)
   }
@@ -41,6 +44,7 @@ const Register = () => {
     setEmail('')
     setPassword('')
     setUser('')
+    setClicked(false)
   }
   return (
     <>
@@ -76,7 +80,10 @@ const Register = () => {
             value={password}
             type="password" onChange={handlePassword} placeholder='Enter Password' />
           <br />
-          <button onClick={handleAdd}>{registerbtn}</button>
+          <button className={Clicked ? 'clickedRegisterbtn': ''} onClick={()=>{
+            handleAdd()
+            setClicked(true)
+          }}>{registerbtn}</button>
           <div className='signup'>
             <p>Already have an account ?</p>
             <Link to="/Home">Login</Link>

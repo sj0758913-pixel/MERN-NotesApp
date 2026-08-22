@@ -12,6 +12,13 @@ const Home = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  // loading btn
+  const [loadingbtn , setLoadingbtn] = useState('');
+
+  // popup message
+  const [showMessage, setShowMessage] = useState(false);
+  const [popText,setpopText] = useState('');
+
   const handleEmail = (e) => {
     setEmail(e.target.value)
   }
@@ -21,21 +28,32 @@ const Home = () => {
   }
 
   const handleLog = () => {
-    setsignInbtn('Signing in...')
+        if (email.trim() === "" || password.trim() === "") {
+          setpopText("⚠️ Fill all fields")
+        setShowMessage(true);
+        return;
+    }
+    setLoadingbtn(true)
     axios.post(API + "/Login", { email: email, password: password }, {
       withCredentials: true
     })
       .then(result => {
         setsignInbtn('Sign in')
+        setLoadingbtn(false)
         navigate("/notes")
+
       })
 
       .catch(err => {
         console.log("something went wrong", err);
+        setLoadingbtn(false)
+        setpopText("Invalid Values")
+        setShowMessage(true)
         setsignInbtn('Sign in')
       })
     setEmail('')
     setPassword('')
+    setpopText('');
   }
 
   return (
@@ -44,7 +62,7 @@ const Home = () => {
       <div className="Login-page">
         <div className='tags'>
           <div className='tag'>
-            <img src="/notesIcon.png" alt="Log0" />
+            <img src="/notesIcon.png" alt="Logo" />
             <h2>Your Personal Notes</h2>
 
 
@@ -70,7 +88,7 @@ const Home = () => {
               value={password}
               type="password" onChange={handlePassword} placeholder='Enter Password' />
             <br />
-            <button onClick={handleLog}>{signInbtn}</button>
+            <button onClick={handleLog}>{ loadingbtn ? <div className='spinnerbtn'></div> : signInbtn}</button>
             <div className='not-login'>
               <p>Don't have an account ?</p>
               <Link to="/" >Create Account</Link>
@@ -79,6 +97,20 @@ const Home = () => {
         </div>
 
       </div>
+
+      {showMessage && (
+    <div className="popup-overlay">
+        <div className="popup">
+            <h3>{popText}</h3>
+
+            <p>Please fill the required or correct values.</p>
+
+            <button onClick={() => setShowMessage(false)}>
+                OK
+            </button>
+        </div>
+    </div>
+)}
 
 
     </>

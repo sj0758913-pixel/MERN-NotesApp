@@ -89,11 +89,11 @@ app.post("/Login", async (req, res) => {
     const { email, password } = req.body;
     const user = await userModel.findOne({ "email": email })
     if (!user) {
-        return res.json("invalid email")
+        return res.status(404).json("invalid email")
     }
     await bcrypt.compare(password, user.password, function (err, result) {
         if (!result) {
-            return res.json("incorrect password")
+            return res.status(404).json("incorrect password")
         }
         const token = jwt.sign({ id: user._id, email: email }, process.env.JWT_SECRET);
         res.cookie("token", token, {

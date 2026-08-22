@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { UNSAFE_shouldHydrateRouteLoader, useNavigate } from 'react-router-dom'
 
 
 const Notes = () => {
@@ -18,6 +18,8 @@ const Notes = () => {
 
     // for loading page
     const [loading, setLoading] = useState(true);
+    const [loadingbtn, setLoadingbtn] = useState('');
+     const [Logoutloadingbtn, setLogoutLoadingbtn] = useState('');
     const [Clicked, setClicked] = useState(false);
 
 
@@ -50,16 +52,22 @@ const Notes = () => {
     }
 
     const handleSubmit = () => {
-        setAddnotebtn('Adding...')
-        
+        // setAddnotebtn('Adding...')
+        setLoadingbtn(true);
+
         axios.post(API + "/addNote", { note: note, Title: Title }, {
             withCredentials: true
         })
             .then(res => {
                 fetchNotes();
                 setAddnotebtn('Add note');
+                setLoadingbtn(false)
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err)
+                setLoadingbtn(false)
+            });
+
 
         setNote('');
         setTitle('');
@@ -89,21 +97,26 @@ const Notes = () => {
     }
 
     const Logout = () => {
-        setlogOutbtn('LogOt..')
+        setLogoutLoadingbtn(true)
         axios.post(API + "/Logout", {}, {
             withCredentials: true
         })
             .then(res => {
                 setlogOutbtn('Log out');
+                setLogoutLoadingbtn(false)
                 navigate("/Home")
+                
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                setLogoutLoadingbtn(false);
+            });
     }
     if (loading) {
         return (
-            <div className="loading">
-                <div className='load'>
-                    <h1>Loading...</h1>
+            <div className="Loading">
+                <div className='spinner'>
+
                 </div>
             </div>
         );
@@ -111,11 +124,14 @@ const Notes = () => {
     return (
         <>
 
+        
             <div className='Note-page'>
 
                 <div className="head">
                     <h2>👋 {username}</h2>
-                    <button onClick={Logout}>{logOutbtn}</button>
+                    <button onClick={Logout}>{Logoutloadingbtn ?
+                            <div className='spinnerbtn'></div>
+                            : logOutbtn}</button>
                 </div>
                 <div>
                     <input className="Title"
@@ -128,11 +144,16 @@ const Notes = () => {
                         onChange={handleNote}
                         placeholder="Create your Note here..."></textarea>
                     <button
-                        className={Clicked ?'clickedAddbtn':'Add-btn'}
-                        onClick={()=>{
+                        className={Clicked ? 'clickedAddbtn' : 'Add-btn'}
+                        onClick={() => {
+
                             handleSubmit()
                             setClicked(true)
-                        }}>{Addnotebtn}</button>
+                        }}>
+
+                        {loadingbtn ?
+                            <div className='spinnerbtn'></div>
+                            : Addnotebtn}</button>
                 </div>
 
                 <h3>All Notes :</h3>
@@ -166,7 +187,9 @@ const Notes = () => {
 
                 </div>
 
+
             </div>
+
         </>
     )
 }

@@ -15,6 +15,10 @@ const Register = () => {
 
   // for clickecbtn
   const [Clicked, setClicked] = useState(false)
+  const [loadingbtn , setLoadingbtn] = useState('');
+
+  // popup message
+    const [showMessage, setShowMessage] = useState(false);
 
   const handleEmail = (e) => {
     setEmail(e.target.value)
@@ -29,17 +33,23 @@ const Register = () => {
   }
 
   const handleAdd = () => {
-    setRegisterbtn('Creating...')
+     if (email.trim() === "" || password.trim() === "" || username.trim() === "") {
+        setShowMessage(true);
+        return;
+    }
+    setLoadingbtn(true);
     axios.post(API + "/register", { email: email, username: username, password: password }, {
       withCredentials: true
     })
       .then(result => {
         navigate("/notes");
         setRegisterbtn('Create Account');
+        setLoadingbtn(true);
 
       })
       .catch(err => {
         setRegisterbtn('Create Account');
+        setLoadingbtn(true);
       })
     setEmail('')
     setPassword('')
@@ -79,11 +89,12 @@ const Register = () => {
           <input
             value={password}
             type="password" onChange={handlePassword} placeholder='Enter Password' />
+          
           <br />
           <button className={Clicked ? 'clickedRegisterbtn': ''} onClick={()=>{
             handleAdd()
             setClicked(true)
-          }}>{registerbtn}</button>
+          }}>{ loadingbtn ? <div className='spinnerbtn'></div> : registerbtn}</button>
           <div className='signup'>
             <p>Already have an account ?</p>
             <Link to="/Home">Login</Link>
@@ -94,6 +105,19 @@ const Register = () => {
         
       </div>
 
+  {showMessage && (
+    <div className="popup-overlay">
+        <div className="popup">
+            <h3>⚠️ Fill all fields</h3>
+
+            <p>Please fill the required values.</p>
+
+            <button onClick={() => setShowMessage(false)}>
+                OK
+            </button>
+        </div>
+    </div>
+)}
 
     </>
   )
